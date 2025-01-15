@@ -1,3 +1,7 @@
+//Ian Volchok
+//1/14/2025
+//this file is like a country quiz thingy
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,6 +21,7 @@ public class Main
   private ImageIcon img;
   private JLabel imageLabel;
   private JLabel outputLabel;
+  private JTextField john;
   
   public static void main(String[] args) {
     // Create the GUI
@@ -29,7 +34,7 @@ public class Main
   public void loadCountries() 
   {
     // Open the data file - do not change
-    File file = new File("countries-data.csv");
+    File file = new File("/workspaces/Countries/workspace/countries-data.csv");
     Scanner scan = null;
     try {
       scan = new Scanner(file);
@@ -40,47 +45,64 @@ public class Main
     // Write a for loop that goes through the countryArray.
     // for(int i ....) {
     // Do the following inside the loop
+    for(int i = 0; i<countryArray.length; i++){
       String input = scan.nextLine();
       String[] data = input.split(",");
       System.out.println("Read in " + data[0]);
       // inside the loop, create a new Country using your constructor with 3 arguments and pass in data[0], data[1], data[2], data[3] as arguments.
      // inside the loop, set countryArray[i] to the created Country object
-     
-    
+        countryArray[i]=new Country(data[0],data[1],data[2],data[3]);
+    }
   }
 
   /* showCountry() will show the image associated with the current country. It should get the country at index from the countryArray. It should use its get method to get its image file name and use the code below to put the image in the GUI.
   */
   public void showCountry() {
     // Get the country at index from countryArray
-    
+    Country c = countryArray[index];
     // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
-    String imagefile = "worldmap.jpg";
+    String imagefile = c.getImage();
     // Use the following code to create an new Image Icon and put it into the GUI
-    img = new ImageIcon(imagefile);
+    img = new ImageIcon("/workspaces/Countries/workspace/"+imagefile);
     imageLabel.setIcon(img);
   }
   
   /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
   public void nextButtonClick()
   {
-    
+    index++;
+    if(index>9){
+      index=0;
+    }
+    outputLabel.setText(null);
+    showCountry();
+    outputLabel.setText(null);
+    Scanner scan = new Scanner(System.in); 
+    outputLabel.setText("what country is this?");
   }
   
   /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
   public void reviewButtonClick()
   {
-     
+    Country j = countryArray[index];
+    System.out.println(j.returnString());
+    outputLabel.setText(j.returnString());
   }
 
   /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
   */
   public void quizButtonClick()
   {
-    Scanner scan = new Scanner(System.in); 
-    
-    
-    
+    Country a = countryArray[index];
+    if (a.getCountryName().equals(john.getText())) {
+      
+      outputLabel.setText("Correct");
+    }
+    else{
+
+      outputLabel.setText("Stupid");
+    }
+
   }
 
 
@@ -108,6 +130,11 @@ public Main() {
         outputLabel = new JLabel();
         jFrame.add(imageLabel);
         jFrame.add(outputLabel);
+
+        //input label
+        john = new JTextField(20);
+        jFrame.add(john);
+
         jFrame.setVisible(true);
         // add event listener for button click
         reviewButton.addActionListener(new ActionListener() {
