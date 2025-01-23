@@ -77,7 +77,6 @@ public class Main
     outputLabel.setText(null);
     showCountry();
     outputLabel.setText(null);
-    Scanner scan = new Scanner(System.in); 
     outputLabel.setText("what country is this?");
   }
   
